@@ -23,3 +23,5 @@ python-dateutil==2.4.2
 # Logging
 git+https://github.com/Seedstars/django-rest-logger.git
 
+# Wagtail
+wagtail==1.9

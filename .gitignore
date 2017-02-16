@@ -37,3 +37,6 @@ shippable/
 
 # not include scripts because they come from external module
 scripts/
+
+# yarn
+yarn.lock

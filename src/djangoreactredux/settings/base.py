@@ -19,22 +19,63 @@ ALLOWED_HOSTS = ['']
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
     'django.contrib.staticfiles',
 
     'rest_framework',
     'django_extensions',
-    'rest_framework_jwt',
 
     'accounts',
-    'base'
+    'base',
+    'cms',
+
+    # Wagtail Apps
+    'wagtail.wagtailforms',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtailcore',
+    'taggit',
+    'modelcluster'
 )
 
 MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.common.CommonMiddleware'
+    'django.middleware.security.SecurityMiddleware',
+
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'debug': DEBUG
+        },
+    },
+]
 
 ROOT_URLCONF = 'djangoreactredux.urls'
 
@@ -54,6 +95,11 @@ AUTH_USER_MODEL = 'accounts.User'
 
 ACCOUNT_ACTIVATION_DAYS = 7  # days
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_NAME = 'base_id'
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATICFILES_DIRS = (
@@ -62,7 +108,6 @@ STATICFILES_DIRS = (
 
 # store static files locally and serve with whitenoise
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 
 # ############# REST FRAMEWORK ###################
 
@@ -82,33 +127,6 @@ REST_FRAMEWORK = {
     ),
 }
 
-# ############ JWT AUTHENTICATION ##################
+# ############# WAGTAIL SETTINGS ###################
 
-JWT_AUTH = {
-    'JWT_ENCODE_HANDLER':
-        'rest_framework_jwt.utils.jwt_encode_handler',
-
-    'JWT_DECODE_HANDLER':
-        'rest_framework_jwt.utils.jwt_decode_handler',
-
-    'JWT_PAYLOAD_HANDLER':
-        'rest_framework_jwt.utils.jwt_payload_handler',
-
-    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
-        'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
-
-    'JWT_RESPONSE_PAYLOAD_HANDLER':
-        'rest_framework_jwt.utils.jwt_response_payload_handler',
-
-    'JWT_SECRET_KEY': SECRET_KEY,
-    'JWT_ALGORITHM': 'HS512',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_LEEWAY': 0,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=60 * 60 * 24),
-
-    'JWT_ALLOW_REFRESH': False,
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
-
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-}
+WAGTAIL_SITE_NAME = 'Base Wagtail Project'

@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>{% block page_title %}{% endblock %}</title>
+
+        <link rel="stylesheet" type="text/css" href="theme.css">
+
+        {% block head_style %}{% endblock %}
+    </head>
+    <body>
+        {% block content %}{% endblock %}
+        {% block extra_js %}{% endblock %}
+    </body>
+</html>

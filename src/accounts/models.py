@@ -1,8 +1,9 @@
 import uuid
 from datetime import timedelta
 
+import datetime
 from django.conf import settings
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -67,7 +68,7 @@ class MyUserManager(BaseUserManager):
                                  **extra_fields)
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     """
     Model that represents an user.
 
@@ -91,10 +92,9 @@ class User(AbstractBaseUser):
     confirmed_email = models.BooleanField(default=False)
 
     is_staff = models.BooleanField(_('staff status'), default=False)
-    is_superuser = models.BooleanField(_('superuser status'), default=False)
     is_active = models.BooleanField(_('active'), default=True)
 
-    date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
+    date_joined = models.DateTimeField(_('date joined'), default=datetime.datetime.now)
 
     activation_key = models.UUIDField(unique=True, default=uuid.uuid4)  # email
 
